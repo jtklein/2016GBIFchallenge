@@ -9,7 +9,7 @@ public class SgActivityMain extends SgActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sg_main);
+        setContentView(R.layout.sg_activity_main);
 
     }
 }
