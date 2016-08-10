@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
     }
 }
 
@@ -14,7 +15,7 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "speciemongo.net.speciemongo"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -30,16 +31,20 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    
+
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
     compile 'com.android.support:design:23.4.0'
 
     compile 'com.jakewharton:butterknife:7.0.1'
 
-    compile ('com.instabug.library:instabugcompat:2+') {
+    compile('com.instabug.library:instabugcompat:2+') {
         exclude group: 'com.android.support'
         exclude group: 'com.google.android.gms'
+    }
+
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.0-beta.1@aar') {
+        transitive = true
     }
 
     testCompile 'junit:junit:4.12'
