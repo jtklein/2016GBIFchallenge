@@ -1,9 +1,10 @@
-package speciemongo.net.speciemongo;
+package speciemongo.net.speciemongo.ui.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SgActivityMain extends AppCompatActivity {
+import speciemongo.net.speciemongo.R;
+
+public class SgActivityMain extends SgActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

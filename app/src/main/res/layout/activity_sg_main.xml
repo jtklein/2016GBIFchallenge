@@ -6,7 +6,7 @@
     android:id="@+id/activity_sg_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="speciemongo.net.speciemongo.SgActivityMain">
+    tools:context="speciemongo.net.speciemongo.ui.activities.SgActivityMain">
 
     <TextView
         android:layout_width="wrap_content"

@@ -21,7 +21,7 @@
 
         <!-- ACTIVITIES -->
 
-        <activity android:name=".SgActivityMain" >
+        <activity android:name=".ui.activities.SgActivityMain" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
