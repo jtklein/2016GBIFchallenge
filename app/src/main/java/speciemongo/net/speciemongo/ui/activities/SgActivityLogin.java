@@ -1,11 +1,13 @@
 package speciemongo.net.speciemongo.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import speciemongo.net.speciemongo.R;
 
 /**
@@ -20,9 +22,6 @@ public class SgActivityLogin extends SgActivity {
     @Bind(R.id.editTextEmail)
     TextView mEditTextEmail;
 
-    @Bind(R.id.buttonLogin)
-    Button mButtonLogin;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +31,19 @@ public class SgActivityLogin extends SgActivity {
 
         // Bind Views
         ButterKnife.bind(this);
+
+    }
+
+    @OnClick(R.id.buttonLogin)
+    public void onLoginClicked() {
+        // Get email
+        String email = this.mEditTextEmail.getText().toString();
+
+        // TODO create profile
+
+        Intent i = new Intent(this, SgActivityMain.class);
+        this.startActivity(i);
+        this.finish();
 
     }
 }
