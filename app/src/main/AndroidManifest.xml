@@ -30,6 +30,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activities.SgActivityLogin"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"/>
+
         <activity android:name=".ui.activities.SgActivityMain"
             android:screenOrientation="portrait"
             android:exported="false"/>
