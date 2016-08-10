@@ -1,7 +1,7 @@
 package speciemongo.net.speciemongo.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -17,6 +17,26 @@ public class SgActivityLauncher extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Create an intent
+        Intent i;
+
+        // TODO If the user is not logged in, go to login
+        /*
+        if(!this.isLoggedIn()) {
+            i = new Intent(this, SgActivityLogin.class);
+
+        }
+        */
+
+        // If the user is logged in, go to main
+        // else {
+            i = new Intent(this, SgActivityMain.class);
+
+        // }
+
+        // Start the activity, and finish this
+        this.startActivity(i);
+        this.finish();
 
     }
 }
