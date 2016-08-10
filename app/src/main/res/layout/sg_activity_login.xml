@@ -24,7 +24,6 @@
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
                 android:inputType="textEmailAddress"
                 android:imeOptions="actionNext"/>
 
