@@ -30,8 +30,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
+    compile 'com.android.support:design:23.4.0'
+
     compile 'com.jakewharton:butterknife:7.0.1'
 
     compile ('com.instabug.library:instabugcompat:2+') {
