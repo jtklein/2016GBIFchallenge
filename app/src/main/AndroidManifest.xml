@@ -46,6 +46,16 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activities.SgActivityMap"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- SERVICES -->
+
+        <!-- Mapbox required telemetry service -->
+        <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
+
     </application>
 
 </manifest>
