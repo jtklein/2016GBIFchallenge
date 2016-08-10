@@ -2,4 +2,5 @@
     <string name="app_name" translatable="false">SpeciemonGo</string>
     <string name="ui_login">Login</string>
     <string name="ui_email_address">Email address</string>
+    <string name="ui_to_map">To Map</string>
 </resources>
