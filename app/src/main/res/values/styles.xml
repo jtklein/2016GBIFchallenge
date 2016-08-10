@@ -8,4 +8,22 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Custom button base style -->
+    <style name="Button" parent="@android:style/Widget.Button">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:paddingLeft">@dimen/material_margin_half_first_tier</item>
+        <item name="android:paddingRight">@dimen/material_margin_half_first_tier</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Custom primary button -->
+    <style name="PrimaryButton" parent="@style/Button">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_marginTop">@dimen/material_margin_first_tier</item>
+        <item name="android:layout_marginLeft">@dimen/material_margin_first_tier</item>
+        <item name="android:layout_marginRight">@dimen/material_margin_first_tier</item>
+        <item name="android:layout_marginBottom">@dimen/material_margin_first_tier</item>
+    </style>
+
 </resources>
