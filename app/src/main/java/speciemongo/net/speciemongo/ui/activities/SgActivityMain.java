@@ -10,5 +10,6 @@ public class SgActivityMain extends SgActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sg_main);
+
     }
 }

@@ -3,6 +3,9 @@ package speciemongo.net.speciemongo;
 import android.app.Application;
 import android.os.StrictMode;
 
+import com.instabug.library.IBGInvocationEvent;
+import com.instabug.library.Instabug;
+
 /**
  * The {@link Application} implementation for the app.
  */
@@ -26,5 +29,11 @@ public class SgApplication extends Application {
                     .build());
 
         }
+
+        // Initialize Instabug
+        new Instabug.Builder(this, "09eb9f6a678f5331c074cfe615d6ba3e")
+                .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
+                .build();
+
     }
 }
