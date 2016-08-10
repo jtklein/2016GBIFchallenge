@@ -19,20 +19,22 @@ public class SgActivityLauncher extends AppCompatActivity {
 
         // Create an intent
         Intent i;
+        i = new Intent(this, SgActivityLogin.class);
 
-        // TODO If the user is not logged in, go to login
+        // TODO If the user is not logged in, go to login, else to main
+
         /*
         if(!this.isLoggedIn()) {
             i = new Intent(this, SgActivityLogin.class);
 
         }
-        */
 
-        // If the user is logged in, go to main
-        // else {
+        If the user is logged in, go to main
+        else {
             i = new Intent(this, SgActivityMain.class);
 
-        // }
+        }
+        */
 
         // Start the activity, and finish this
         this.startActivity(i);
