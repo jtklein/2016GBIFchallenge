@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name" translatable="false">SpeciemonGo</string>
+    <string name="ui_login">Login</string>
 </resources>
