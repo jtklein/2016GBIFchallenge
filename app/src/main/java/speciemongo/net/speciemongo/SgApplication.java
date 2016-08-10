@@ -5,6 +5,7 @@ import android.os.StrictMode;
 
 import com.instabug.library.IBGInvocationEvent;
 import com.instabug.library.Instabug;
+import com.mapbox.mapboxsdk.MapboxAccountManager;
 
 /**
  * The {@link Application} implementation for the app.
@@ -30,9 +31,14 @@ public class SgApplication extends Application {
 
         }
 
+        MapboxAccountManager.start(this, this.getString(R.string.keychain_mapbox_access_token));
+
+        // TODO change handled failure logs to Instabug in beta
         // Initialize Instabug
-        new Instabug.Builder(this, "09eb9f6a678f5331c074cfe615d6ba3e")
+        new Instabug.Builder(this, this.getString(R.string.keychain_instabug_start_token))
                 .setInvocationEvent(IBGInvocationEvent.IBGInvocationEventShake)
+                .setShouldShowIntroDialog(false)
+                .setDebugEnabled(true)
                 .build();
 
     }
