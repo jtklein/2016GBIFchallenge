@@ -25,7 +25,7 @@ public class SgActivityMap extends SgActivityMain {
     /**
      * The button to start the camera activity
      */
-    @Bind(R.id.buttonCamera)
+    @Bind(R.id.buttonStartCamera)
     Button mButtonCamera;
 
     @Override

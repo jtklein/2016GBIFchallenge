@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ui_to_camera"
-        android:id="@+id/buttonCamera"
+        android:id="@+id/buttonStartCamera"
         android:layout_alignParentBottom="true"
         style="@style/PrimaryButton" />
 
