@@ -29,7 +29,7 @@ public class SgActivityMap extends SgActivityMain {
         // This contains the MapView in XML and needs to be called after the account manager
         setContentView(R.layout.sg_activity_map);
 
-        // Initializing NavigationView
+        // Initializing MapView
         try {
             this.mMapViewMain = (MapView) findViewById(R.id.mapviewMain);
             this.mMapViewMain.onCreate(savedInstanceState);

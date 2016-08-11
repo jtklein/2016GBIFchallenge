@@ -11,6 +11,10 @@
         android:id="@+id/mapviewMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        mapbox:style_url="mapbox://styles/mapbox/outdoors-v9" />
+        mapbox:style_url="mapbox://styles/mapbox/outdoors-v9"
+        mapbox:center_latitude="49.126"
+        mapbox:center_longitude="8.709"
+        mapbox:zoom="16"
+        mapbox:tilt="20" />
 
 </android.support.constraint.ConstraintLayout>
