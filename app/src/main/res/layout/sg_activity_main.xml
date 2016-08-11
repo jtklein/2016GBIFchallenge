@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_sg_main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_sg_main"
     tools:context="speciemongo.net.speciemongo.ui.activities.SgActivityMain">
+
+    <fragment android:name="speciemongo.net.speciemongo.ui.fragments.main.SgFragmentMainProfile"
+        android:id="@+id/profile_fragment"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
         android:layout_width="match_parent"
@@ -16,4 +22,4 @@
         android:layout_alignParentBottom="true"
         style="@style/PrimaryButton"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
