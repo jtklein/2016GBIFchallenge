@@ -31,8 +31,6 @@ public class SgApplication extends Application {
 
         }
 
-        MapboxAccountManager.start(this, this.getString(R.string.keychain_mapbox_access_token));
-
         // TODO change handled failure logs to Instabug in beta
         // Initialize Instabug
         new Instabug.Builder(this, this.getString(R.string.keychain_instabug_start_token))
