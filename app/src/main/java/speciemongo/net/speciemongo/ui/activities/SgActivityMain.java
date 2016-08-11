@@ -42,6 +42,11 @@ public class SgActivityMain extends SgActivity {
     @Bind(R.id.cardViewSpeciesdex)
     CardView mFragmentSpeciesdex;
 
+    /**
+     * The {@link ProgressDialog} used
+     */
+    private ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,15 @@ public class SgActivityMain extends SgActivity {
 
     @OnClick(R.id.cardViewExplore)
     public void onExploreClicked() {
+
+        // Show the progress bar
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showProgressDialog();
+
+            }
+        });
 
         // If the user did not grant Fine Location permission, request it
         if (!this.hasFineLocationPermission()) {
@@ -178,5 +192,38 @@ public class SgActivityMain extends SgActivity {
                 return;
             }
         }
+    }
+
+    /**
+     * Shows the progress dialog
+     */
+    private void showProgressDialog() {
+        // If no dialog was yet created, do so
+        if(this.mProgressDialog == null) {
+            this.mProgressDialog = new SgProgressDialog(SgActivityMain.this);
+        }
+
+        // Show the dialog
+        this.mProgressDialog.show();
+
+    }
+
+    /**
+     * Hides the progress dialog if set
+     */
+    private void hideProgressDialog() {
+        // Dismiss progress dialog if set
+        if(this.mProgressDialog != null) {
+            this.mProgressDialog.dismiss();
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Hide progress dialog to prevent leaking
+        this.hideProgressDialog();
     }
 }
