@@ -9,7 +9,19 @@
     tools:context="speciemongo.net.speciemongo.ui.activities.SgActivityMain">
 
     <fragment android:name="speciemongo.net.speciemongo.ui.fragments.main.SgFragmentMainProfile"
-        android:id="@+id/profile_fragment"
+        android:id="@+id/fragmentProfile"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <fragment android:name="speciemongo.net.speciemongo.ui.fragments.main.SgFragmentMainExplore"
+        android:id="@+id/fragmentExplore"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <fragment android:name="speciemongo.net.speciemongo.ui.fragments.main.SgFragmentMainSpeciesDex"
+        android:id="@+id/fragmentSpeciesdex"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
