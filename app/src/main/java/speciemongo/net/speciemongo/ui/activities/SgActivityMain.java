@@ -23,9 +23,27 @@ public class SgActivityMain extends SgActivity {
 
     @OnClick(R.id.buttonDummyToMap)
     public void onDummyToMapClicked() {
-        Intent i = new Intent(this, SgActivityMap.class);
-        this.startActivity(i);
-        this.finish();
+
+        // If the user did not grant Location permissions request them
+        if (!this.hasLocationPermissions()) {
+            this.requestLocationPermissions();
+        }
+
+        if (this.hasLocationPermissions()) {
+            Intent i = new Intent(this, SgActivityMap.class);
+            this.startActivity(i);
+            this.finish();
+
+        }
+    }
+
+    public Boolean hasLocationPermissions() {
+        return true;
+
+    }
+
+    public void requestLocationPermissions() {
+
 
     }
 }

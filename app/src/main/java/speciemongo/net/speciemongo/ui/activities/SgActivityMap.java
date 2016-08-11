@@ -14,10 +14,6 @@ public class SgActivityMap extends SgActivityMain {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // If the user did not grant Location permissions request them
-        if (!this.hasLocationPermissions()) {
-            this.requestLocationPermissions();
-        }
         // Mapbox access token only needs to be configured once in the app
         MapboxAccountManager.start(this, this.getString(R.string.keychain_mapbox_access_token));
 
@@ -47,15 +43,7 @@ public class SgActivityMap extends SgActivityMain {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
-
-    public Boolean hasLocationPermissions() {
-
-    }
-
-    public void requestLocationPermissions() {
-
 
     }
 }
