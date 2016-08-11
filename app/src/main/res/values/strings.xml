@@ -3,7 +3,7 @@
 
     <string name="ui_login">Login</string>
     <string name="ui_email_address">Email address</string>
-    <string name="ui_to_map">To Map</string>
+    <string name="ui_to_camera">To Camera</string>
     <string name="ui_profile">Profile</string>
     <string name="ui_profile_detail_text">Coming soon! Customizable profile!</string>
     <string name="ui_explore">Explore</string>

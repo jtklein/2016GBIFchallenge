@@ -2,12 +2,14 @@ package speciemongo.net.speciemongo.ui.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.mapbox.mapboxsdk.MapboxAccountManager;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
+import butterknife.Bind;
 import speciemongo.net.speciemongo.R;
 
 /**
@@ -15,7 +17,16 @@ import speciemongo.net.speciemongo.R;
  */
 public class SgActivityMap extends SgActivityMain {
 
-    MapView mMapViewMain;
+    /**
+     * The {@link MapView} instance
+     */
+    private MapView mMapViewMain;
+
+    /**
+     * The button to start the camera activity
+     */
+    @Bind(R.id.buttonCamera)
+    Button mButtonCamera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
