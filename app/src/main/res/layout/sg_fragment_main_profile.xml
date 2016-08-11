@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
         app:cardBackgroundColor="@color/colorBlue"
-        android:id="@+id/baseView">
+        android:id="@+id/cardViewProfile">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_alignParentLeft="true"
