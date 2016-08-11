@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sg_activity_map"
@@ -17,4 +18,12 @@
         mapbox:zoom="16"
         mapbox:tilt="20" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ui_to_camera"
+        android:id="@+id/buttonCamera"
+        android:layout_alignParentBottom="true"
+        style="@style/PrimaryButton" />
+
+</RelativeLayout>
