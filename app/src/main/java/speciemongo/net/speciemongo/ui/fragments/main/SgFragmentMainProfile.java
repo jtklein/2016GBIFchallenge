@@ -1,6 +1,7 @@
 package speciemongo.net.speciemongo.ui.fragments.main;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,8 @@ import speciemongo.net.speciemongo.R;
 import speciemongo.net.speciemongo.ui.fragments.SgFragment;
 
 /**
- * Created by johannesklein on 11.08.16.
+ * The {@link Fragment} of the main activity that links to the profile activity
  */
-
 public class SgFragmentMainProfile extends SgFragment {
 
     @Override

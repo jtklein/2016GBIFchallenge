@@ -1,19 +1,18 @@
 package speciemongo.net.speciemongo.ui.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 
 import com.mapbox.mapboxsdk.MapboxAccountManager;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import speciemongo.net.speciemongo.R;
 
+/**
+ *  The activity that shows the map element.
+ */
 public class SgActivityMap extends SgActivityMain {
 
     MapView mMapViewMain;

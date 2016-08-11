@@ -1,17 +1,23 @@
 package speciemongo.net.speciemongo.ui.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import speciemongo.net.speciemongo.R;
+import speciemongo.net.speciemongo.ui.SgProgressDialog;
 
+/**
+ * The main activity of the app. The content is provided by fragments.
+ */
 public class SgActivityMain extends SgActivity {
 
     /**
@@ -25,22 +31,22 @@ public class SgActivityMain extends SgActivity {
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 2233;
 
     /**
-     * The {@link Fragment} that links to the profile activity
+     * The {@link CardView} that links to the profile activity
      */
     @Bind(R.id.cardViewProfile)
-    CardView mFragmentProfile;
+    CardView mCardViewProfile;
 
     /**
-     * The {@link Fragment} that links to the explore activity
+     * The {@link CardView} that links to the explore activity
      */
     @Bind(R.id.cardViewExplore)
-    CardView mFragmentExplore;
+    CardView mCardViewExplore;
 
     /**
-     * The {@link Fragment} that links to the Speciesdex activity
+     * The {@link CardView} that links to the Speciesdex activity
      */
     @Bind(R.id.cardViewSpeciesdex)
-    CardView mFragmentSpeciesdex;
+    CardView mCardViewSpeciesdex;
 
     /**
      * The {@link ProgressDialog} used
