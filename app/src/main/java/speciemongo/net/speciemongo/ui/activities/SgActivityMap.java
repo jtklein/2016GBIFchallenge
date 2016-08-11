@@ -1,6 +1,12 @@
 package speciemongo.net.speciemongo.ui.activities;
 
+import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Button;
 
@@ -10,12 +16,15 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import speciemongo.net.speciemongo.R;
+import speciemongo.net.speciemongo.ui.SgProgressDialog;
 
 /**
  *  The activity that shows the map element.
  */
-public class SgActivityMap extends SgActivityMain {
+public class SgActivityMap extends SgActivity {
 
     /**
      * The {@link MapView} instance
@@ -23,10 +32,15 @@ public class SgActivityMap extends SgActivityMain {
     private MapView mMapViewMain;
 
     /**
-     * The button to start the camera activity
+     * The request code for the CAMERA permission
      */
-    @Bind(R.id.buttonStartCamera)
-    Button mButtonCamera;
+    private final static int MY_PERMISSIONS_REQUEST_CAMERA = 3344;
+
+    /**
+     * The {@link ProgressDialog} used
+     */
+    private ProgressDialog mProgressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +52,9 @@ public class SgActivityMap extends SgActivityMain {
         // Set Content View
         // This contains the MapView in XML and needs to be called after the account manager
         setContentView(R.layout.sg_activity_map);
+
+        // Bind Views
+        ButterKnife.bind(this);
 
         // Initializing MapView
         try {
@@ -80,11 +97,116 @@ public class SgActivityMap extends SgActivityMain {
     protected void onDestroy() {
         super.onDestroy();
         this.mMapViewMain.onDestroy();
+
+        // Hide progress dialog to prevent leaking
+        this.hideProgressDialog();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         this.mMapViewMain.onSaveInstanceState(outState);
+    }
+
+    @OnClick(R.id.buttonStartCamera)
+    public void onCameraClicked() {
+
+        // If the user did not grant Fine Location permission, request it
+        if (!this.hasCameraPermission()) {
+            this.requestCameraPermissions();
+        }
+
+        if (this.hasCameraPermission()) {
+            this.startCamera();
+
+        }
+
+        // TODO do something wihout permission
+    }
+
+    /**
+     * Starts the camera activity
+     */
+    public void startCamera() {
+        Intent i = new Intent(this, SgActivityCamera.class);
+        this.startActivity(i);
+        this.finish();
+
+    }
+
+    /**
+     * Checks if the app has the CAMERA permission
+     * @return true if permission is granted
+     */
+    public Boolean hasCameraPermission() {
+        // Check if we have camera access
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED) {
+            return true;
+
+        } else {
+            return false;
+
+        }
+    }
+
+    /**
+     * Requests the CAMERA permission at runtime
+     */
+    public void requestCameraPermissions() {
+        // Request the permission.
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                MY_PERMISSIONS_REQUEST_CAMERA);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        // The results of the asking for permission dialogue
+        switch (requestCode) {
+            // Callback is from the ACCESS_FINE_LOCATION permission
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // CAMERA permission was granted
+                    // nothing to do here
+
+                } else {
+
+                    // CAMERA permission denied
+                    // TODO show explanation why we need it
+                }
+                return;
+            }
+        }
+    }
+
+    /**
+     * Shows the progress dialog
+     */
+    private void showProgressDialog() {
+        // If no dialog was yet created, do so
+        if(this.mProgressDialog == null) {
+            this.mProgressDialog = new SgProgressDialog(SgActivityMap.this);
+        }
+
+        // Show the dialog
+        this.mProgressDialog.show();
+
+    }
+
+    /**
+     * Hides the progress dialog if set
+     */
+    private void hideProgressDialog() {
+        // Dismiss progress dialog if set
+        if(this.mProgressDialog != null) {
+            this.mProgressDialog.dismiss();
+
+        }
     }
 }
