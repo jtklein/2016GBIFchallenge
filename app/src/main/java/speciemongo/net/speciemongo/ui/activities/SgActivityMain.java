@@ -67,11 +67,21 @@ public class SgActivityMain extends SgActivity {
         }
 
         if (this.hasFineLocationPermission() && this.hasCoarseLocationPermission()) {
-            Intent i = new Intent(this, SgActivityMap.class);
-            this.startActivity(i);
-            this.finish();
+            this.startMap();
 
         }
+
+        // TODO do something wihout permission
+    }
+
+    /**
+     * Starts the map activity
+     */
+    public void startMap() {
+        Intent i = new Intent(this, SgActivityMap.class);
+        this.startActivity(i);
+        this.finish();
+
     }
 
     /**
@@ -156,7 +166,9 @@ public class SgActivityMain extends SgActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     // ACCESS_COARSE_LOCATION permission was granted
-                    // nothing to do here
+                    // start the map activity
+                    // TODO enough for MVP under expected UI flow, future: make sure only one dialog, control async permission grant
+                    this.startMap();
 
                 } else {
 
