@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import speciemongo.net.speciemongo.R;
@@ -23,6 +24,24 @@ public class SgActivityMain extends SgActivity {
      */
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 2233;
 
+    /**
+     * The {@link Fragment} that links to the profile activity
+     */
+    @Bind(R.id.cardViewProfile)
+    CardView mFragmentProfile;
+
+    /**
+     * The {@link Fragment} that links to the explore activity
+     */
+    @Bind(R.id.cardViewExplore)
+    CardView mFragmentExplore;
+
+    /**
+     * The {@link Fragment} that links to the Speciesdex activity
+     */
+    @Bind(R.id.cardViewSpeciesdex)
+    CardView mFragmentSpeciesdex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +54,8 @@ public class SgActivityMain extends SgActivity {
 
     }
 
-    @OnClick(R.id.buttonDummyToMap)
-    public void onDummyToMapClicked() {
+    @OnClick(R.id.cardViewExplore)
+    public void onExploreClicked() {
 
         // If the user did not grant Fine Location permission, request it
         if (!this.hasFineLocationPermission()) {
