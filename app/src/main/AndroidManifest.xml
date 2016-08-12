@@ -51,6 +51,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.activities.SgActivityCamera"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <!-- SERVICES -->
 
         <!-- Mapbox required telemetry service -->
