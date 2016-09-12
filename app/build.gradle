@@ -44,6 +44,8 @@ dependencies {
         exclude group: 'com.google.android.gms'
     }
 
+    compile 'com.google.android.gms:play-services-location:9.4.0'
+
     compile('com.mapbox.mapboxsdk:mapbox-android-sdk:4.2.0-beta.1@aar') {
         transitive = true
     }
