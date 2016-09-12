@@ -247,6 +247,16 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // An unresolvable error has occurred and a connection to Google APIs
         // could not be established. Display an error message, or handle
         // the failure silently
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(this.getClass().getSimpleName(), "Connected to Google Location API");
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(this.getClass().getSimpleName(), "Connection to Google Location API suspended");
+
+    }
 
     }
 }
