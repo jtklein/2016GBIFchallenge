@@ -54,6 +54,9 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     // Unique tag for the error dialog fragment
     private static final String DIALOG_ERROR = "dialog_error";
 
+    // Bool to track whether the app is already resolving an error
+    private boolean mResolvingError = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -288,6 +291,20 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             mResolvingError = true;
         }
     }
+    private void showErrorDialog(int errorCode) {
+        // Create a fragment for the error dialog
+        ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
+        // Pass the error that should be displayed
+        Bundle args = new Bundle();
+        args.putInt(DIALOG_ERROR, errorCode);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getSupportFragmentManager(), "errordialog");
+    }
+
+    public void onDialogDismissed() {
+        mResolvingError = false;
+    }
+
     public static class ErrorDialogFragment extends DialogFragment {
         public ErrorDialogFragment() { }
 
