@@ -26,7 +26,7 @@ import speciemongo.net.speciemongo.ui.SgProgressDialog;
 /**
  *  The activity that shows the map element.
  */
-public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     /**
      * The {@link MapView} instance
@@ -80,7 +80,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .enableAutoManage(this, this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
         }
