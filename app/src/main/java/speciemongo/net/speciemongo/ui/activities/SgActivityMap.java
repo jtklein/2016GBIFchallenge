@@ -48,6 +48,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
     private GoogleApiClient mGoogleApiClient;
 
+    // Request code to use when launching the resolution activity
+    private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
