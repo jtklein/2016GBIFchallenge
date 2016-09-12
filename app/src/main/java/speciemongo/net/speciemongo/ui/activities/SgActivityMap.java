@@ -5,10 +5,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.mapbox.mapboxsdk.MapboxAccountManager;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -22,7 +26,7 @@ import speciemongo.net.speciemongo.ui.SgProgressDialog;
 /**
  *  The activity that shows the map element.
  */
-public class SgActivityMap extends SgActivity {
+public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     /**
      * The {@link MapView} instance
@@ -38,6 +42,8 @@ public class SgActivityMap extends SgActivity {
      * The {@link ProgressDialog} used
      */
     private ProgressDialog mProgressDialog;
+
+    private GoogleApiClient mGoogleApiClient;
 
 
     @Override
@@ -70,6 +76,15 @@ public class SgActivityMap extends SgActivity {
         } catch (Exception e) {
             Log.e(this.getClass().getSimpleName(), e.getMessage());
         }
+
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
     }
 
     // Add the MapView lifecycle to the activity's lifecycle methods
@@ -206,5 +221,13 @@ public class SgActivityMap extends SgActivity {
             this.mProgressDialog.dismiss();
 
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and a connection to Google APIs
+        // could not be established. Display an error message, or handle
+        // the failure silently
+
     }
 }
