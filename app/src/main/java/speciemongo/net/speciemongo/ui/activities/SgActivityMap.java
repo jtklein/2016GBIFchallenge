@@ -1,7 +1,9 @@
 package speciemongo.net.speciemongo.ui.activities;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -57,6 +60,9 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     // Bool to track whether the app is already resolving an error
     private boolean mResolvingError = false;
 
+    // Key for the resolving error boolean
+    private static final String STATE_RESOLVING_ERROR = "resolving_error";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +103,9 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
                     .build();
         }
 
+        // Save the resolving error if present
+        mResolvingError = savedInstanceState != null
+                && savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
     }
 
     @Override
@@ -149,6 +158,9 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         this.mMapViewMain.onSaveInstanceState(outState);
+
+        // Save the resolving error boolean in the activity's saved instance data
+        outState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
     }
 
     @OnClick(R.id.buttonStartCamera)
@@ -254,10 +266,6 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and a connection to Google APIs
-        // could not be established. Display an error message, or handle
-        // the failure silently
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(this.getClass().getSimpleName(), "Connected to Google Location API");
 
