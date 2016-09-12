@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +19,16 @@ import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.mapbox.mapboxsdk.MapboxAccountManager;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -65,6 +75,10 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
     // Key for the resolving error boolean
     private static final String STATE_RESOLVING_ERROR = "resolving_error";
+
+    private Location mLastLocation;
+
+    private LocationRequest mLocationRequest;
 
     // Request code to use when checking the location settings
     private static final int REQUEST_CHECK_SETTINGS = 1002;
@@ -301,6 +315,11 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
         result.setResultCallback(this);
 
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+
+    }
 
     @Override
     public void onResult(LocationSettingsResult result) {
@@ -331,6 +350,10 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
                 // to fix the settings so we won't show the dialog.
                 break;
         }
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
@@ -399,6 +422,10 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
     public void onDialogDismissed() {
         mResolvingError = false;
+    }
+
+    public void onLocationChanged(Location location) {
+
     }
 
     public static class ErrorDialogFragment extends DialogFragment {
