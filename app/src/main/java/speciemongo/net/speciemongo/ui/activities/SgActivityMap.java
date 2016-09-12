@@ -32,7 +32,10 @@ import speciemongo.net.speciemongo.ui.SgProgressDialog;
 /**
  *  The activity that shows the map element.
  */
-public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks,
+        ResultCallback<LocationSettingsResult>,
+        LocationListener{
 
     /**
      * The {@link MapView} instance
@@ -283,6 +286,36 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
 
+
+    @Override
+    public void onResult(LocationSettingsResult result) {
+        final Status status = result.getStatus();
+        final LocationSettingsStates states = result.getLocationSettingsStates();
+
+        Log.i(this.getClass().getSimpleName(), "LocationSettingsResult is: " + result.getStatus().getStatusMessage());
+        switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.SUCCESS:
+                // All location settings are satisfied. The client can
+                // initialize location requests here.
+                break;
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    status.startResolutionForResult(
+                            this,
+                            REQUEST_CHECK_SETTINGS);
+                } catch (IntentSender.SendIntentException e) {
+                    // Ignore the error.
+                }
+                break;
+            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                // Location settings are not satisfied. However, we have no way
+                // to fix the settings so we won't show the dialog.
+                break;
+        }
     }
 
     @Override
