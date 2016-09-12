@@ -88,6 +88,24 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Connect to Google API client
+        mGoogleApiClient.connect();
+        Log.i(this.getClass().getSimpleName(), "Connected to Google API Client");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Disconnect the Google API client
+        mGoogleApiClient.disconnect();
+        Log.i(this.getClass().getSimpleName(), "Disconnected from Google API Client");
+    }
+
     // Add the MapView lifecycle to the activity's lifecycle methods
     @Override
     public void onResume() {
