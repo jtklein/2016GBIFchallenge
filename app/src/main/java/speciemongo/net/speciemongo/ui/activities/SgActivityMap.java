@@ -269,6 +269,11 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(this.getClass().getSimpleName(), "Connected to Google Location API");
 
+        // Create location request
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     @Override
