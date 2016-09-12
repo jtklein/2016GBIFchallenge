@@ -66,6 +66,13 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     // Key for the resolving error boolean
     private static final String STATE_RESOLVING_ERROR = "resolving_error";
 
+    // Request code to use when checking the location settings
+    private static final int REQUEST_CHECK_SETTINGS = 1002;
+
+    private boolean mRequestingLocationUpdates = false;
+
+    private static final String STATE_LOCATION_UPDATES = "location_updates";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +116,10 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // Save the resolving error if present
         mResolvingError = savedInstanceState != null
                 && savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
+
+        // Save the resolving error if present
+        mRequestingLocationUpdates = savedInstanceState != null
+                && savedInstanceState.getBoolean(STATE_LOCATION_UPDATES, false);
     }
 
     @Override
@@ -164,6 +175,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
         // Save the resolving error boolean in the activity's saved instance data
         outState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
+
+        outState.putBoolean(STATE_LOCATION_UPDATES, mRequestingLocationUpdates);
     }
 
     @OnClick(R.id.buttonStartCamera)
@@ -286,6 +299,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
 
+        result.setResultCallback(this);
+
 
     @Override
     public void onResult(LocationSettingsResult result) {
@@ -351,6 +366,17 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_RESOLVE_ERROR) {
             mResolvingError = false;
+            if (resultCode == RESULT_OK) {
+                // Make sure the app is not already connected or attempting to connect
+                if (!mGoogleApiClient.isConnecting() &&
+                        !mGoogleApiClient.isConnected()) {
+                    mGoogleApiClient.connect();
+                }
+            }
+        }
+
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            mRequestingLocationUpdates = false;
             if (resultCode == RESULT_OK) {
                 // Make sure the app is not already connected or attempting to connect
                 if (!mGoogleApiClient.isConnecting() &&
