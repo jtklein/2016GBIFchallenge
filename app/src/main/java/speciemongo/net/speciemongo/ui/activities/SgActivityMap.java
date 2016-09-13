@@ -82,12 +82,25 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
      */
     private static final String DIALOG_ERROR = "dialog_error";
 
+    /**
+     * Boolean to track whether the app is already resolving changing the location settings
+     */
+    private boolean mResolvingSettings = false;
 
+    /**
+     * Key for the resolving checking settings error boolean
+     */
+    private static final String STATE_CHECKING_SETTINGS = "checking_settings";
 
     /**
      * Request code to use when checking the location settings
      */
     private static final int REQUEST_CHECK_SETTINGS = 1002;
+
+    /**
+     * Boolean to track whether the app is already listening to location updates
+     */
+    private Boolean mUpdatingLocation = false;
 
     /**
      * Key for the app is updating location boolean
@@ -101,7 +114,6 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
 
 
-    private boolean mRequestingLocationUpdates = false;
     /**
      * The request code for the CAMERA permission
      */
@@ -190,31 +202,49 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         Log.i(this.getClass().getSimpleName(), "Disconnected from Google API Client");
     }
 
-    // Add the MapView lifecycle to the activity's lifecycle methods
+
     @Override
     public void onResume() {
         super.onResume();
+
+        // Add the MapView lifecycle to the activity's lifecycle methods
         this.mMapViewMain.onResume();
+
+        // Connect to location API for location updates
+        if (mGoogleApiClient.isConnected() && !mUpdatingLocation) {
+            startLocationUpdates();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        // Add the MapView lifecycle to the activity's lifecycle methods
         this.mMapViewMain.onPause();
+
+        // Disconnect from location API updates
+        this.stopLocationUpdates();
+
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+
+        // Add the MapView lifecycle to the activity's lifecycle methods
         this.mMapViewMain.onLowMemory();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        // Add the MapView lifecycle to the activity's lifecycle methods
         this.mMapViewMain.onDestroy();
 
-        // Hide progress dialog to prevent leaking
+        // Hide the camera progress dialog to prevent leaking
         this.hideProgressDialog();
     }
 
