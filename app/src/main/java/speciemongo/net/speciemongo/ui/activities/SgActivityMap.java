@@ -30,17 +30,23 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.loopj.android.http.*;
 import com.mapbox.mapboxsdk.MapboxAccountManager;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
+import org.json.*;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 import speciemongo.net.speciemongo.R;
 import speciemongo.net.speciemongo.ui.SgProgressDialog;
+import speciemongo.net.speciemongo.utility.SgGbifRestClient;
 
 /**
  *  The activity that shows the map element.
@@ -317,6 +323,7 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             mMap.setMyLocationEnabled(true);
 
             String queryGeometry = buildQueryGeometry(mLastLocation);
+            queryOccurrence(queryGeometry);
         }
         Log.i(this.getClass().getSimpleName(), "Last known location was: " + mLastLocation.toString());
 
@@ -377,6 +384,27 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // called when response HTTP status is "200 OK"
+                // If the response is JSONObject instead of expected JSONArray
+
+                try {
+                    int numberOccurrences = response.getInt("count");
+
+                    JSONArray results = response.getJSONArray("results");
+
+                    for (int i = 0; i < numberOccurrences; i++) {
+                        JSONObject dataPoint = results.getJSONObject(i);
+
+                        double longitude = dataPoint.getDouble("decimalLongitude");
+                        double latitude = dataPoint.getDouble("decimalLatitude");
+
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(latitude, longitude)));
+
+                    }
+
+                } catch (JSONException e) {
+                    Log.e(this.getClass().getSimpleName(), e.getMessage());
+                }
             }
 
             @Override
@@ -462,6 +490,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
         // TODO do this on a separate thread or updating of location is blocked
         String queryGeometry = buildQueryGeometry(mCurrentLocation);
+        queryOccurrence(queryGeometry);
+
     }
 
     /**
