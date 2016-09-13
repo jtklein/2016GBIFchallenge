@@ -369,6 +369,24 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         mUpdatingLocation = true;
 
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        // Store the new location
+        mCurrentLocation = location;
+
+        Log.i(this.getClass().getSimpleName(), "Latitude is: " + String.valueOf(mCurrentLocation.getLatitude()));
+        Log.i(this.getClass().getSimpleName(), "Longitude is: " + String.valueOf(mCurrentLocation.getLongitude()));
+
+        if (mCurrentLocation != null) {
+            // Move the map camera to where the user location is
+            mMap.setCameraPosition(new CameraPosition.Builder()
+                    .target(new LatLng(location))
+                    .build());
+        }
+
+    }
+
     /**
      * Stop listening to location updates from the location API
      */
