@@ -366,6 +366,28 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         return queryGeometry;
     }
 
+    private void queryOccurrence(String queryGeometry) {
+
+        mMap.clear();
+
+        // Make RESTful webservice call using AsyncHttpClient object
+        SgGbifRestClient.get("occurrence/search?HAS_GEOSPATIAL_ISSUE=false&HAS_COORDINATE=true&" + queryGeometry,
+                null, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // called when response HTTP status is "200 OK"
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                // Called when response HTTP status is "4XX" (eg. 401, 403, 404)
+
+                // TODO something meaningful here
+            }
+        });
+    }
+
     @Override
     public void onResult(LocationSettingsResult result) {
         // Get status
