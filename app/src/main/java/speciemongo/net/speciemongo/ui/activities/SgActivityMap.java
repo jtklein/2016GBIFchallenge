@@ -58,7 +58,9 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     private MapView mMapViewMain;
 
     /**
+     * The {@link MapboxMap} instance
      */
+    public MapboxMap mMap;
 
     /**
      * Boolean to track whether the app is already resolving an error onConnectionFailed
@@ -147,8 +149,10 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             this.mMapViewMain = (MapView) findViewById(R.id.mapviewMain);
             this.mMapViewMain.onCreate(savedInstanceState);
             this.mMapViewMain.getMapAsync(new OnMapReadyCallback() {
+
                 @Override
                 public void onMapReady(MapboxMap mapboxMap) {
+                    mMap = mapboxMap;
 
                     // Customize map with markers, polylines, etc.
                 }
