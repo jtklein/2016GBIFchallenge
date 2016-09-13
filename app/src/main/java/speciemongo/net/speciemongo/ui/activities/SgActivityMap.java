@@ -325,17 +325,26 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         if (mResolvingError) {
             // Already attempting to resolve an error.
             return;
+
         } else if (result.hasResolution()) {
             try {
                 mResolvingError = true;
                 result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+
             } catch (IntentSender.SendIntentException e) {
                 // There was an error with the resolution intent. Try again.
                 mGoogleApiClient.connect();
             }
         } else {
-            // Show dialog using GoogleApiAvailability.getErrorDialog()
-            showErrorDialog(result.getErrorCode());
+            // Create a fragment for the error dialog
+            ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
+
+            // Pass the error that should be displayed and show the dialog
+            Bundle args = new Bundle();
+            args.putInt(DIALOG_ERROR, result.getErrorCode());
+            dialogFragment.setArguments(args);
+            dialogFragment.show(getSupportFragmentManager(), "errordialog");
+
             mResolvingError = true;
         }
     }
@@ -365,25 +374,12 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         }
     }
 
-    private void showErrorDialog(int errorCode) {
-        // Create a fragment for the error dialog
-        ErrorDialogFragment dialogFragment = new ErrorDialogFragment();
-        // Pass the error that should be displayed
-        Bundle args = new Bundle();
-        args.putInt(DIALOG_ERROR, errorCode);
-        dialogFragment.setArguments(args);
-        dialogFragment.show(getSupportFragmentManager(), "errordialog");
-    }
-
-    public void onDialogDismissed() {
-        mResolvingError = false;
-    }
-
-    public void onLocationChanged(Location location) {
-
-    }
-
+    /**
+     * A fragment to display an error dialog
+     */
     public static class ErrorDialogFragment extends DialogFragment {
+
+        // Create an instance
         public ErrorDialogFragment() { }
 
         @Override
