@@ -45,13 +45,61 @@ import speciemongo.net.speciemongo.ui.SgProgressDialog;
 public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,
         ResultCallback<LocationSettingsResult>,
-        LocationListener{
+        LocationListener {
+
+    /**
+     * The {@link GoogleApiClient} instance
+     */
+    private GoogleApiClient mGoogleApiClient;
 
     /**
      * The {@link MapView} instance
      */
     private MapView mMapViewMain;
 
+    /**
+     */
+
+    /**
+     * Boolean to track whether the app is already resolving an error onConnectionFailed
+     */
+    private boolean mResolvingError = false;
+
+    /**
+     * Key for the resolving error boolean
+     */
+    private static final String STATE_RESOLVING_ERROR = "resolving_error";
+
+    /**
+     * Request code to use when launching the resolution activity for onConnectionFailed
+     */
+    private static final int REQUEST_RESOLVE_ERROR = 1001;
+
+    /**
+     * Unique tag for the error dialog fragment, showing onConnectionFailed
+     */
+    private static final String DIALOG_ERROR = "dialog_error";
+
+
+
+    /**
+     * Request code to use when checking the location settings
+     */
+    private static final int REQUEST_CHECK_SETTINGS = 1002;
+
+    /**
+     * Key for the app is updating location boolean
+     */
+    private static final String STATE_LOCATION_UPDATES = "location_updates";
+
+    /**
+     * The last known {@link Location} on start
+     */
+    private Location mLastLocation;
+
+
+
+    private boolean mRequestingLocationUpdates = false;
     /**
      * The request code for the CAMERA permission
      */
@@ -61,31 +109,6 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
      * The {@link ProgressDialog} used
      */
     private ProgressDialog mProgressDialog;
-
-    private GoogleApiClient mGoogleApiClient;
-
-    // Request code to use when launching the resolution activity
-    private static final int REQUEST_RESOLVE_ERROR = 1001;
-
-    // Unique tag for the error dialog fragment
-    private static final String DIALOG_ERROR = "dialog_error";
-
-    // Bool to track whether the app is already resolving an error
-    private boolean mResolvingError = false;
-
-    // Key for the resolving error boolean
-    private static final String STATE_RESOLVING_ERROR = "resolving_error";
-
-    private Location mLastLocation;
-
-    private LocationRequest mLocationRequest;
-
-    // Request code to use when checking the location settings
-    private static final int REQUEST_CHECK_SETTINGS = 1002;
-
-    private boolean mRequestingLocationUpdates = false;
-
-    private static final String STATE_LOCATION_UPDATES = "location_updates";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
