@@ -101,21 +101,13 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // Bind Views
         ButterKnife.bind(this);
 
-        // Initializing MapView
-        try {
-            this.mMapViewMain = (MapView) findViewById(R.id.mapviewMain);
-            this.mMapViewMain.onCreate(savedInstanceState);
-            this.mMapViewMain.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(MapboxMap mapboxMap) {
-
-                    // Customize map with markers, polylines, etc.
-
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e(this.getClass().getSimpleName(), e.getMessage());
+        // Check if GPS is enabled and if not send user to the GSP settings
+        // TODO Better solution would be to display a dialog and suggesting to go to the settings
+        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean enabledGPS = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!enabledGPS) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
         }
 
         // Create an instance of GoogleAPIClient.
@@ -126,6 +118,23 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
                     .addApi(LocationServices.API)
                     .build();
         }
+
+        // Initializing MapView
+        try {
+            this.mMapViewMain = (MapView) findViewById(R.id.mapviewMain);
+            this.mMapViewMain.onCreate(savedInstanceState);
+            this.mMapViewMain.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(MapboxMap mapboxMap) {
+
+                    // Customize map with markers, polylines, etc.
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e(this.getClass().getSimpleName(), e.getMessage());
+        }
+
 
         // Save the resolving error if present
         mResolvingError = savedInstanceState != null
