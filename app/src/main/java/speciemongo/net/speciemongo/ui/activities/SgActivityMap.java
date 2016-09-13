@@ -236,38 +236,36 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     }
 
     @Override
-
-    }
-
-    /**
-     * Hides the progress dialog if set
-     */
-    private void hideProgressDialog() {
-        // Dismiss progress dialog if set
-        if(this.mProgressDialog != null) {
-            this.mProgressDialog.dismiss();
-
-        }
-    }
-
-    @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(this.getClass().getSimpleName(), "Connected to Google Location API");
 
+        // Get the last known location
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        // Move the map position to last known location
+        if (mLastLocation != null) {
+            // Move the map camera to where the user location is
+            mMap.setCameraPosition(new CameraPosition.Builder()
+                    .target(new LatLng(mLastLocation))
+                    .build());
+        }
+        Log.i(this.getClass().getSimpleName(), "Last known location was: " + mLastLocation.toString());
+
         // Create location request
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         // Get the current location settings of the user's device
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
+                .addLocationRequest(locationRequest);
 
         // Check whether the current location settings are satisfied
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
 
+        // Set the callback for checking the location settings
         result.setResultCallback(this);
 
         if (mRequestingLocationUpdates) {
