@@ -353,8 +353,28 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         }
     }
 
+    /**
+     * Start listening to location updates from the location API
+     */
     protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        Log.i(this.getClass().getSimpleName(), "Starting location updates");
+
+        // Create location request
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
+        mUpdatingLocation = true;
+
+    }
+    /**
+     * Stop listening to location updates from the location API
+     */
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        mUpdatingLocation = false;
     }
 
     @Override
