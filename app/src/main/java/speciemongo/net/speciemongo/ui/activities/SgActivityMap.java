@@ -268,39 +268,41 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // Set the callback for checking the location settings
         result.setResultCallback(this);
 
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
-
     }
 
     @Override
     public void onResult(LocationSettingsResult result) {
+        // Get status
         final Status status = result.getStatus();
-        final LocationSettingsStates states = result.getLocationSettingsStates();
+        Log.i(this.getClass().getSimpleName(), "LocationSettingsResult is: " + status.getStatusMessage());
 
-        Log.i(this.getClass().getSimpleName(), "LocationSettingsResult is: " + result.getStatus().getStatusMessage());
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
-                // All location settings are satisfied. The client can
-                // initialize location requests here.
+                // All location settings are satisfied. Initialize location updates request.
+                if (!mUpdatingLocation) {
+                    this.startLocationUpdates();
+                }
+
                 break;
+
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 // Location settings are not satisfied, but this can be fixed
                 // by showing the user a dialog.
                 try {
                     // Show the dialog by calling startResolutionForResult(),
                     // and check the result in onActivityResult().
-                    status.startResolutionForResult(
-                            this,
-                            REQUEST_CHECK_SETTINGS);
+                    mResolvingSettings = true;
+                    status.startResolutionForResult(this, REQUEST_CHECK_SETTINGS);
+
                 } catch (IntentSender.SendIntentException e) {
                     // Ignore the error.
                 }
                 break;
+
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                 // Location settings are not satisfied. However, we have no way
                 // to fix the settings so we won't show the dialog.
+                // TODO explain to user
                 break;
         }
     }
@@ -349,24 +351,26 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // If the request code was from onConnectionFailed to the location API client
         if (requestCode == REQUEST_RESOLVE_ERROR) {
             mResolvingError = false;
+            // If the error is resolved
             if (resultCode == RESULT_OK) {
-                // Make sure the app is not already connected or attempting to connect
-                if (!mGoogleApiClient.isConnecting() &&
-                        !mGoogleApiClient.isConnected()) {
+                // Make sure the app is not already connected or attempting to connect, then connect
+                if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
                     mGoogleApiClient.connect();
                 }
             }
         }
 
+        // If the request code was from checking the location settings
         if (requestCode == REQUEST_CHECK_SETTINGS) {
-            mRequestingLocationUpdates = false;
+            mResolvingSettings = false;
+            // If the error is resolved
             if (resultCode == RESULT_OK) {
-                // Make sure the app is not already connected or attempting to connect
-                if (!mGoogleApiClient.isConnecting() &&
-                        !mGoogleApiClient.isConnected()) {
-                    mGoogleApiClient.connect();
+                // All location settings are satisfied. Initialize location updates request.
+                if (!mUpdatingLocation) {
+                    this.startLocationUpdates();
                 }
             }
         }
