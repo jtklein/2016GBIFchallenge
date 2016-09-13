@@ -175,13 +175,27 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         }
 
 
-        // Save the resolving error if present
+
+        // Save the resolving error boolean if present
         mResolvingError = savedInstanceState != null
                 && savedInstanceState.getBoolean(STATE_RESOLVING_ERROR, false);
 
-        // Save the resolving error if present
-        mRequestingLocationUpdates = savedInstanceState != null
-                && savedInstanceState.getBoolean(STATE_LOCATION_UPDATES, false);
+        // Save the resolving settings boolean if present
+        mResolvingSettings = savedInstanceState != null
+                && savedInstanceState.getBoolean(STATE_CHECKING_SETTINGS, false);
+
+        // Update location data
+        this.updateValuesFromBundle(savedInstanceState);
+
+    }
+
+    private void updateValuesFromBundle(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // Update the value of mUpdatingLocation from the Bundle
+            if (savedInstanceState.keySet().contains(STATE_LOCATION_UPDATES)) {
+                mUpdatingLocation = savedInstanceState.getBoolean(STATE_LOCATION_UPDATES);
+            }
+        }
     }
 
     @Override
@@ -258,6 +272,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // Save the resolving error boolean in the activity's saved instance data
         savedInstanceState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
 
+        // Save the resolving error boolean in the activity's saved instance data
+        savedInstanceState.putBoolean(STATE_CHECKING_SETTINGS, mResolvingSettings);
 
         // Save the location updates boolean in the activity's saved instance data
         savedInstanceState.putBoolean(STATE_LOCATION_UPDATES, mUpdatingLocation);
