@@ -219,104 +219,23 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        this.mMapViewMain.onSaveInstanceState(outState);
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        // Add the MapView lifecycle to the activity's lifecycle methods
+        this.mMapViewMain.onSaveInstanceState(savedInstanceState);
 
         // Save the resolving error boolean in the activity's saved instance data
-        outState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
+        savedInstanceState.putBoolean(STATE_RESOLVING_ERROR, mResolvingError);
 
-        outState.putBoolean(STATE_LOCATION_UPDATES, mRequestingLocationUpdates);
-    }
 
-    @OnClick(R.id.buttonStartCamera)
-    public void onCameraClicked() {
+        // Save the location updates boolean in the activity's saved instance data
+        savedInstanceState.putBoolean(STATE_LOCATION_UPDATES, mUpdatingLocation);
 
-        // If the user did not grant Fine Location permission, request it
-        if (!this.hasCameraPermission()) {
-            this.requestCameraPermissions();
-        }
-
-        if (this.hasCameraPermission()) {
-            this.startCamera();
-
-        }
-
-        // TODO do something wihout permission
-    }
-
-    /**
-     * Starts the camera activity
-     */
-    public void startCamera() {
-        Intent i = new Intent(this, SgActivityCamera.class);
-        this.startActivity(i);
-        this.finish();
-
-    }
-
-    /**
-     * Checks if the app has the CAMERA permission
-     * @return true if permission is granted
-     */
-    public Boolean hasCameraPermission() {
-        // Check if we have camera access
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED) {
-            return true;
-
-        } else {
-            return false;
-
-        }
-    }
-
-    /**
-     * Requests the CAMERA permission at runtime
-     */
-    public void requestCameraPermissions() {
-        // Request the permission.
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CAMERA},
-                MY_PERMISSIONS_REQUEST_CAMERA);
 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        // The results of the asking for permission dialogue
-        switch (requestCode) {
-            // Callback is from the ACCESS_FINE_LOCATION permission
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // CAMERA permission was granted
-                    // nothing to do here
-
-                } else {
-
-                    // CAMERA permission denied
-                    // TODO show explanation why we need it
-                }
-                return;
-            }
-        }
-    }
-
-    /**
-     * Shows the progress dialog
-     */
-    private void showProgressDialog() {
-        // If no dialog was yet created, do so
-        if(this.mProgressDialog == null) {
-            this.mProgressDialog = new SgProgressDialog(SgActivityMap.this);
-        }
-
-        // Show the dialog
-        this.mProgressDialog.show();
 
     }
 
@@ -478,6 +397,115 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         @Override
         public void onDismiss(DialogInterface dialog) {
             ((SgActivityMap) getActivity()).onDialogDismissed();
+        }
+    }
+
+    /**
+     * Called from ErrorDialogFragment when the dialog is dismissed
+     */
+    public void onDialogDismissed() {
+        mResolvingError = false;
+    }
+
+    @OnClick(R.id.buttonStartCamera)
+    public void onCameraClicked() {
+
+        // If the user did not grant Fine Location permission, request it
+        if (!this.hasCameraPermission()) {
+            this.requestCameraPermissions();
+        }
+
+        if (this.hasCameraPermission()) {
+            this.startCamera();
+
+        }
+
+        // TODO do something wihout permission
+    }
+
+    /**
+     * Starts the camera activity
+     */
+    public void startCamera() {
+        Intent i = new Intent(this, SgActivityCamera.class);
+        this.startActivity(i);
+        this.finish();
+
+    }
+
+    /**
+     * Checks if the app has the CAMERA permission
+     * @return true if permission is granted
+     */
+    public Boolean hasCameraPermission() {
+        // Check if we have camera access
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED) {
+            return true;
+
+        } else {
+            return false;
+
+        }
+    }
+
+    /**
+     * Requests the CAMERA permission at runtime
+     */
+    public void requestCameraPermissions() {
+        // Request the permission.
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                MY_PERMISSIONS_REQUEST_CAMERA);
+
+    }
+
+    /**
+     * Shows the progress dialog
+     */
+    private void showProgressDialog() {
+        // If no dialog was yet created, do so
+        if(this.mProgressDialog == null) {
+            this.mProgressDialog = new SgProgressDialog(SgActivityMap.this);
+        }
+
+        // Show the dialog
+        this.mProgressDialog.show();
+
+    }
+
+    /**
+     * Hides the progress dialog if set
+     */
+    private void hideProgressDialog() {
+        // Dismiss progress dialog if set
+        if(this.mProgressDialog != null) {
+            this.mProgressDialog.dismiss();
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        // The results of the asking for permission dialogue
+        switch (requestCode) {
+            // Callback is from the ACCESS_FINE_LOCATION permission
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // CAMERA permission was granted
+                    // nothing to do here
+
+                } else {
+
+                    // CAMERA permission denied
+                    // TODO show explanation why we need it
+                }
+                return;
+            }
         }
     }
 }
