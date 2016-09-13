@@ -314,6 +314,9 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             mMap.setCameraPosition(new CameraPosition.Builder()
                     .target(new LatLng(mLastLocation))
                     .build());
+            mMap.setMyLocationEnabled(true);
+
+            String queryGeometry = buildQueryGeometry(mLastLocation);
         }
         Log.i(this.getClass().getSimpleName(), "Last known location was: " + mLastLocation.toString());
 
@@ -334,6 +337,33 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // Set the callback for checking the location settings
         result.setResultCallback(this);
 
+    }
+
+    public String buildQueryGeometry(Location lastLocation) {
+
+        double longitude = lastLocation.getLongitude();
+        double latitude = lastLocation.getLatitude();
+        double ad = 0.004;
+
+        double[] polygonLongs = new double[2];
+        double[] polygonLats = new double[2];
+
+        polygonLongs[0] = longitude + ad;
+        polygonLongs[1] = longitude - ad;
+
+        polygonLats[0] = latitude + ad;
+        polygonLats[1] = latitude - ad;
+
+        // Build query string fo GBIF occurence search
+        String queryGeometry = "geometry=POLYGON(("
+                + longitude + " " + polygonLats[0] + ", "
+                + polygonLongs[0] + " " + latitude + ", "
+                + longitude + " " + polygonLats[1] + ", "
+                + polygonLongs[1] + " " + latitude + ", "
+                + longitude + " " + polygonLats[0]
+                + "))";
+
+        return queryGeometry;
     }
 
     @Override
@@ -403,8 +433,13 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             mMap.setCameraPosition(new CameraPosition.Builder()
                     .target(new LatLng(location))
                     .build());
+
+            // TODO update current location layer on map
+
         }
 
+        // TODO do this on a separate thread or updating of location is blocked
+        String queryGeometry = buildQueryGeometry(mCurrentLocation);
     }
 
     /**
