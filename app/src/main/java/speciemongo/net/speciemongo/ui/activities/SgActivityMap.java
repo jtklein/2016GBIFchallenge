@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -27,9 +29,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.mapbox.mapboxsdk.MapboxAccountManager;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -112,7 +115,15 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
      */
     private Location mLastLocation;
 
+    /**
+     * The current {@link Location}
+     */
+    private Location mCurrentLocation;
 
+    /**
+     * Key for the current location
+     */
+    private static final String LOCATION_KEY = "last_location";
 
     /**
      * The request code for the CAMERA permission
@@ -194,6 +205,13 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             // Update the value of mUpdatingLocation from the Bundle
             if (savedInstanceState.keySet().contains(STATE_LOCATION_UPDATES)) {
                 mUpdatingLocation = savedInstanceState.getBoolean(STATE_LOCATION_UPDATES);
+            }
+
+            // Update the value of mCurrentLocation from the Bundle
+            if (savedInstanceState.keySet().contains(LOCATION_KEY)) {
+                // Since LOCATION_KEY was found in the Bundle, we can be sure that
+                // mCurrentLocation is not null.
+                mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
             }
         }
     }
@@ -278,6 +296,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         // Save the location updates boolean in the activity's saved instance data
         savedInstanceState.putBoolean(STATE_LOCATION_UPDATES, mUpdatingLocation);
 
+        // Save the current location to the activity's saved instance data
+        savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
 
     }
 
