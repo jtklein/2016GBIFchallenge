@@ -184,6 +184,7 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
                     mMap = mapboxMap;
 
                     // Customize map with markers, polylines, etc.
+                    // TODO disable scrolling
                 }
             });
 
@@ -316,6 +317,8 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
         // Move the map position to last known location
         if (mLastLocation != null) {
+            Log.i(this.getClass().getSimpleName(), "Last known location was: " + mLastLocation.toString());
+
             // Move the map camera to where the user location is
             mMap.setCameraPosition(new CameraPosition.Builder()
                     .target(new LatLng(mLastLocation))
@@ -325,7 +328,6 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             String queryGeometry = buildQueryGeometry(mLastLocation);
             queryOccurrence(queryGeometry);
         }
-        Log.i(this.getClass().getSimpleName(), "Last known location was: " + mLastLocation.toString());
 
         // Create location request
         LocationRequest locationRequest = new LocationRequest();
@@ -654,7 +656,7 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
                                            String permissions[], int[] grantResults) {
         // The results of the asking for permission dialogue
         switch (requestCode) {
-            // Callback is from the ACCESS_FINE_LOCATION permission
+            // Callback is from the CAMERA permission
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
