@@ -137,6 +137,11 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     private final static int MY_PERMISSIONS_REQUEST_CAMERA = 3344;
 
     /**
+     * The request code for the CAMERA permission
+     */
+    private final static int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 3345;
+
+    /**
      * The {@link ProgressDialog} used
      */
     private ProgressDialog mProgressDialog;
@@ -310,6 +315,12 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         Log.i(this.getClass().getSimpleName(), "Connected to Google Location API");
 
         // Get the last known location
@@ -459,6 +470,12 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
      * Start listening to location updates from the location API
      */
     protected void startLocationUpdates() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         Log.i(this.getClass().getSimpleName(), "Starting location updates");
 
         // Create location request
@@ -606,7 +623,12 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
             this.requestCameraPermissions();
         }
 
-        if (this.hasCameraPermission()) {
+        // If the user did not grant external storage permission, request it
+        if (!this.hasExternalStoragePermission()) {
+            this.requestExternalStoragePermissions();
+        }
+
+        if (this.hasCameraPermission() && this.hasExternalStoragePermission()) {
             this.startCamera();
 
         }
@@ -631,6 +653,22 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     }
 
     /**
+     * Checks if the app has the WRITE_EXTERNAL_STORAGE permission
+     * @return true if permission is granted
+     */
+    public Boolean hasExternalStoragePermission() {
+        // Check if we have external storage access
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
+            return true;
+
+        } else {
+            return false;
+
+        }
+    }
+
+    /**
      * Requests the CAMERA permission at runtime
      */
     public void requestCameraPermissions() {
@@ -638,6 +676,17 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.CAMERA},
                 MY_PERMISSIONS_REQUEST_CAMERA);
+
+    }
+
+    /**
+     * Requests the WRITE_EXTERNAL_STORAGE permission at runtime
+     */
+    public void requestExternalStoragePermissions() {
+        // Request the permission.
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
 
     }
 
@@ -672,7 +721,26 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
                 }
                 return;
             }
+
+            // Callback is from the WRITE_EXTERNAL_STORAGE permission
+            case MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // WRITE_EXTERNAL_STORAGE permission was granted
+                    // nothing to do here
+
+                } else {
+
+                    // WRITE_EXTERNAL_STORAGE permission denied
+                    // TODO show explanation why we need it
+                }
+                return;
+            }
         }
+
+
     }
 
     /**

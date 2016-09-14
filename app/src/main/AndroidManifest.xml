@@ -10,8 +10,14 @@
     <!-- Dangerous permissions -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- TODO request at runtime -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- TODO request permission at runtime -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Used features -->
+    <!-- Restricted to devices with camera -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:name=".SgApplication"
