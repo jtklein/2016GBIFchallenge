@@ -599,7 +599,7 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     @OnClick(R.id.buttonStartCamera)
     public void onCameraClicked() {
 
-        // If the user did not grant Fine Location permission, request it
+        // If the user did not grant camera permission, request it
         if (!this.hasCameraPermission()) {
             this.requestCameraPermissions();
         }
@@ -610,16 +610,6 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
         }
 
         // TODO do something wihout permission
-    }
-
-    /**
-     * Starts the camera activity
-     */
-    public void startCamera() {
-        Intent i = new Intent(this, SgActivityCamera.class);
-        this.startActivity(i);
-        this.finish();
-
     }
 
     /**
@@ -650,28 +640,13 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
     }
 
     /**
-     * Shows the progress dialog
+     * Starts the camera activity
      */
-    private void showProgressDialog() {
-        // If no dialog was yet created, do so
-        if(this.mProgressDialog == null) {
-            this.mProgressDialog = new SgProgressDialog(SgActivityMap.this);
-        }
+    public void startCamera() {
+        Intent i = new Intent(this, SgActivityCamera.class);
+        this.startActivity(i);
+        this.finish();
 
-        // Show the dialog
-        this.mProgressDialog.show();
-
-    }
-
-    /**
-     * Hides the progress dialog if set
-     */
-    private void hideProgressDialog() {
-        // Dismiss progress dialog if set
-        if(this.mProgressDialog != null) {
-            this.mProgressDialog.dismiss();
-
-        }
     }
 
     @Override
@@ -695,6 +670,31 @@ public class SgActivityMap extends SgActivity implements GoogleApiClient.OnConne
                 }
                 return;
             }
+        }
+    }
+
+    /**
+     * Shows the progress dialog
+     */
+    private void showProgressDialog() {
+        // If no dialog was yet created, do so
+        if(this.mProgressDialog == null) {
+            this.mProgressDialog = new SgProgressDialog(SgActivityMap.this);
+        }
+
+        // Show the dialog
+        this.mProgressDialog.show();
+
+    }
+
+    /**
+     * Hides the progress dialog if set
+     */
+    private void hideProgressDialog() {
+        // Dismiss progress dialog if set
+        if(this.mProgressDialog != null) {
+            this.mProgressDialog.dismiss();
+
         }
     }
 }
