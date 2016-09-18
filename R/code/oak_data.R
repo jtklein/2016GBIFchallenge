@@ -2,28 +2,29 @@
 rm(list = ls())
 
 library(rgbif)
-#nrec = 100000
+nrec = 100000
 layers = 1:19 # up to 19
+res = 1000
 
 # get the species code
 # returns numerous quercus rubras!
-# oak <- name_suggest(q = 'quercus rubra',rank = 'species')
-# 
-# oak_data <- occ_data(scientificName = 'quercus rubra', hasCoordinate = TRUE, limit = nrec)
-# 
-# oak_data$meta
-# nrow(oak_data$data)
-# 
-# plot(oak_data$data$decimalLongitude, oak_data$data$decimalLatitude)
-# 
-# # Only keep ones with good accuracy
-# sum(is.na(oak_data$data$coordinateUncertaintyInMeters))
-# d <- oak_data$data
-# d <- d[!is.na(d$coordinateUncertaintyInMeters),]
-# d <- d[d$coordinateUncertaintyInMeters <= 10, ]
-# d$value <- 1
-# 
-# write.csv(d[,c('decimalLatitude','decimalLongitude', 'value')], file = 'R/presence_data/oak_data.csv', row.names = FALSE)
+oak <- name_suggest(q = 'quercus rubra',rank = 'species')
+
+oak_data <- occ_data(scientificName = 'quercus rubra', hasCoordinate = TRUE, limit = nrec)
+
+oak_data$meta
+nrow(oak_data$data)
+
+plot(oak_data$data$decimalLongitude, oak_data$data$decimalLatitude)
+
+# Only keep ones with good accuracy
+sum(is.na(oak_data$data$coordinateUncertaintyInMeters))
+d <- oak_data$data
+d <- d[!is.na(d$coordinateUncertaintyInMeters),]
+d <- d[d$coordinateUncertaintyInMeters <= res, ]
+d$value <- 1
+
+write.csv(d[,c('decimalLatitude','decimalLongitude', 'value')], file = paste0('R/presence_data/oak_data', res, '.csv'), row.names = FALSE)
 
 library(zoon)
 
