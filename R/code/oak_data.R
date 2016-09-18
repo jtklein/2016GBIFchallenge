@@ -4,7 +4,7 @@ rm(list = ls())
 library(rgbif)
 nrec = 100000
 layers = 1:19 # up to 19
-res = 1000
+res = 1000 # using 10 got rid of all records in the UK
 
 # get the species code
 # returns numerous quercus rubras!
