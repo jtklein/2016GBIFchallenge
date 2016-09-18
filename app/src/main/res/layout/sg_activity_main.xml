@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_sg_main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_sg_main"
     tools:context="speciemongo.net.speciemongo.ui.activities.SgActivityMain">
 
-    <Button
+    <fragment android:name="speciemongo.net.speciemongo.ui.fragments.main.SgFragmentMainProfile"
+        android:id="@+id/fragmentProfile"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/ui_to_map"
-        android:id="@+id/buttonDummyToMap"
-        android:layout_alignParentBottom="true"
-        style="@style/PrimaryButton"/>
+        android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+    <fragment android:name="speciemongo.net.speciemongo.ui.fragments.main.SgFragmentMainExplore"
+        android:id="@+id/fragmentExplore"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <fragment android:name="speciemongo.net.speciemongo.ui.fragments.main.SgFragmentMainSpeciesDex"
+        android:id="@+id/fragmentSpeciesdex"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

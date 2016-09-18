@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name" translatable="false">SpeciemonGo</string>
+
     <string name="ui_login">Login</string>
     <string name="ui_email_address">Email address</string>
-    <string name="ui_to_map">To Map</string>
+    <string name="ui_to_camera">To Camera</string>
+    <string name="ui_profile">Profile</string>
+    <string name="ui_profile_detail_text">Coming soon! Customizable profile!</string>
+    <string name="ui_explore">Explore</string>
+    <string name="ui_explore_detail_text">Click here to explore the world!</string>
+    <string name="ui_species_dex">Speciesdex</string>
+    <string name="ui_species_dex_detail_text">Coming soon! Your own Speciesdex.</string>
+    <string name="ui_loading">Loading ...</string>
 </resources>
