@@ -1,6 +1,6 @@
 # Get fine resolution data for a species
 library(rgbif)
-nrec = 100
+nrec = 1000
 layers = 1:3
 
 # get the species code
@@ -28,13 +28,12 @@ library(zoon)
 w <- workflow(LocalOccurrenceData(filename = 'R/presence_data/oak_data.csv',
                                   columns = c(long = "decimalLongitude", lat = "decimalLatitude", value = "value")),
               Bioclim(layers = layers),
-              Background(n = 1000),
               QuickGRaF,
+              LogisticRegression,
               PrintMap)
 
 save(w, file = 'R/zoon_temp.rdata')
 
-library("rgdal")
-class(Output(w))
-# [1] "SpatialPointsDataFrame"
-writeOGR(meuse, "test_geojson", layer="meuse", driver="GeoJSON")
+writeRaster(Output(w), filename = 'R/predicted_occurrence/oak_test.tif', format = 'GTiff')
+
+plot(Output(w))
