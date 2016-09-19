@@ -1,4 +1,6 @@
 *.iml
+*.Rhistory
+*.Rproj
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -6,3 +8,5 @@
 .DS_Store
 /build
 /captures
+.Rproj.user
+/R/zoon_temp.rdata
